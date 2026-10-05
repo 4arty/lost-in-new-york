@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lost in New York</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #0f172a;
+    color: #e2e8f0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+  }
+  .app {
+    width: 100%;
+    max-width: 480px;
+    background: #1e293b;
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+  h1 { font-size: 22px; margin-bottom: 8px; color: #fff; }
+  h2 { font-size: 18px; margin: 16px 0 8px; color: #93c5fd; }
+  p { line-height: 1.6; margin-bottom: 12px; font-size: 15px; }
+  .subtitle { color: #94a3b8; font-size: 14px; margin-bottom: 20px; }
+  button {
+    background: #3b82f6;
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 12px;
+    transition: background 0.2s;
+  }
+  button:hover { background: #2563eb; }
+  button.secondary { background: #334155; }
+  button.secondary:hover { background: #475569; }
+  button:disabled { opacity: 0.5; cursor: not-allowed; }
+  .img-placeholder {
+    width: 100%;
+    height: 180px;
+    background: #334155;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #64748b;
+    font-size: 13px;
+    margin: 16px 0;
+    text-align: center;
+    padding: 10px;
+    border: 2px dashed #475569;
+  }
+  img.chapter-img {
+    width: 100%;
+    border-radius: 12px;
+    margin: 16px 0;
+    display: block;
+  }
+  .exercise {
+    background: #0f172a;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  .exercise-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    color: #64748b;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+  }
+  .question { font-size: 15px; margin-bottom: 12px; color: #f1f5f9; }
+  input[type="text"] {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 2px solid #334155;
+    background: #1e293b;
+    color: #fff;
+    font-size: 15px;
+    outline: none;
+  }
+  input[type="text"]:focus { border-color: #3b82f6; }
+  input[type="text"]:disabled { opacity: 0.6; }
+  .options { display: flex; flex-direction: column; gap: 8px; }
+  .option {
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 2px solid #334155;
+    background: #1e293b;
+    color: #e2e8f0;
+    cursor: pointer;
+    font-size: 15px;
+    text-align: left;
+    transition: all 0.15s;
+    width: 100%;
+    margin: 0;
+  }
+  .option:hover { border-color: #3b82f6; }
+  .option.selected { border-color: #3b82f6; background: #1e3a8a; }
+  .option.correct { border-color: #22c55e; background: #14532d; }
+  .option.wrong { border-color: #ef4444; background: #7f1d1d; }
+  .tf-row { display: flex; gap: 8px; }
+  .tf-row .option { text-align: center; }
+  .feedback {
+    margin-top: 12px;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .feedback.correct { background: #14532d; color: #bbf7d0; }
+  .feedback.wrong { background: #7f1d1d; color: #fecaca; }
+  .quote {
+    margin-top: 8px;
+    padding: 10px;
+    background: rgba(0,0,0,0.3);
+    border-left: 3px solid #facc15;
+    border-radius: 6px;
+    font-style: italic;
+    color: #fde68a;
+    font-size: 13px;
+  }
+  .progress-bar {
+    height: 6px;
+    background: #334155;
+    border-radius: 3px;
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: #3b82f6;
+    transition: width 0.3s;
+  }
+  .hidden { display: none; }
+  .center { text-align: center; }
+  .result-box {
+    background: #0f172a;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    margin-top: 16px;
+  }
+  .big { font-size: 40px; margin-bottom: 8px; }
+  .chapter-map {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 16px;
+  }
+  .chapter-btn {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    background: #0f172a;
+    border: 2px solid #334155;
+    color: #e2e8f0;
+    cursor: pointer;
+    text-align: left;
+    width: 100%;
+    margin: 0;
+    font-size: 15px;
+  }
+  .chapter-btn:hover:not(:disabled) { border-color: #3b82f6; }
+  .chapter-btn.locked { opacity: 0.4; cursor: not-allowed; }
+  .chapter-btn.done { border-color: #22c55e; }
+  .chapter-num {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #334155;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .chapter-btn.done .chapter-num { background: #22c55e; color: #0f172a; }
+  .chapter-title { flex: 1; }
+  .chapter-status { font-size: 18px; }
+  .topnav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  .topnav button {
+    width: auto;
+    padding: 8px 14px;
+    font-size: 13px;
+    margin: 0;
+  }
+  .topnav .level-tag {
+    font-size: 12px;
+    padding: 4px 10px;
+    background: #334155;
+    border-radius: 20px;
+    color: #93c5fd;
+  }
+  .final-screen {
+    text-align: center;
+    padding: 20px 0;
+  }
+  .final-screen .emoji {
+    font-size: 56px;
+    margin-bottom: 16px;
+    display: block;
+  }
+  .final-screen h1 {
+    font-size: 24px;
+    margin-bottom: 12px;
+    color: #fbbf24;
+  }
+  .final-screen .story-title {
+    font-size: 16px;
+    color: #93c5fd;
+    font-style: italic;
+    margin-bottom: 20px;
+  }
+  .final-stats {
+    background: #0f172a;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px 0;
+  }
+  .final-stats .stat-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #334155;
+    font-size: 15px;
+  }
+  .final-stats .stat-row:last-child { border-bottom: none; }
+  .final-stats .stat-value {
+    font-weight: 700;
+    color: #93c5fd;
+  }
+  .final-thanks {
+    font-size: 14px;
+    color: #94a3b8;
+    line-height: 1.6;
+    margin: 20px 0;
+    font-style: italic;
+  }
+</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+
+<script>
+// ============ КОНТЕНТ ============
+const content = {
+  a2: {
+    chapters: [
+      {
+        id: 1,
+        title: "Arrival",
+        text: [
+          { type: "p", value: "Anya is 22 years old. She is from Moscow. Today she arrives in New York. She is very excited but also a little scared." },
+          { type: "img", value: "ch1_a2_1.jpg" },
+          { type: "p", value: "She takes a yellow taxi from the airport to her hotel. The driver is friendly. He talks about the city. Anya looks out of the window. The buildings are very tall. She smiles." },
+          { type: "img", value: "ch1_a2_2.jpg" },
+          { type: "p", value: "At the hotel, she looks for her backpack. But it is not there. She left it in the taxi! Her passport, her phone, and her money are in the backpack." },
+          { type: "p", value: "Anya is alone in a big city. She does not know what to do." }
+        ],
+        exercises: [
+          { type: "fill", label: "Напиши пропущенное слово", question: "Anya is from M____w.", answer: "Moscow", quote: "She is from Moscow." },
+          { type: "fill", label: "Напиши пропущенное слово", question: "She takes a yellow t____ from the airport.", answer: "taxi", quote: "She takes a yellow taxi from the airport to her hotel." },
+          { type: "fill", label: "Напиши пропущенное слово", question: "Her p______t, phone, and money are in the backpack.", answer: "passport", quote: "Her passport, her phone, and her money are in the backpack." },
+          { type: "fill", label: "Напиши пропущенное слово", question: "Anya is a____ in a big city.", answer: "alone", quote: "Anya is alone in a big city." },
+          { type: "choice", label: "Выбери правильный вариант", question: "How old is Anya?", options: ["18", "22", "25"], answer: 1 },
+          { type: "choice", label: "Выбери правильный вариант", question: "Where does she arrive?", options: ["London", "Moscow", "New York"], answer: 2 },
+          { type: "choice", label: "Выбери правильный вариант", question: "What does she lose?", options: ["Her ticket", "Her backpack", "Her keys"], answer: 1 },
+          { type: "tf", label: "Правда или ложь", question: "Anya is from New York.", answer: false, quote: "She is from Moscow." },
+          { type: "tf", label: "Правда или ложь", question: "The taxi driver is friendly.", answer: true, quote: "The driver is friendly. He talks about the city." },
+          { type: "tf", label: "Правда или ложь", question: "Her passport is in the backpack.", answer: true, quote: "Her passport, her phone, and her money are in the backpack." },
+          { type: "tf", label: "Правда или ложь", question: "Anya knows exactly what to do.", answer: false, quote: "She does not know what to do." }
+        ]
+      },
+      {
+        id: 2,
+        title: "The Stranger",
+        text: [
+          { type: "p", value: "Anya walks out of the hotel. She sits on a bench near the street. She is very sad. She has no phone and no money." },
+          { type: "img", value: "ch2_a2_1.jpg" },
+          { type: "p", value: "A young man comes to her. He has a guitar on his back. His name is Jake. He is from Brooklyn." },
+          { type: "img", value: "ch2_a2_2.jpg" },
+          { type: "p", value: "\"Are you okay?\" he asks." },
+          { type: "p", value: "\"No,\" Anya says. \"I lost my backpack in a taxi.\"" },
+          { type: "p", value: "Jake smiles. \"Don't worry. I can help you.\"" },
+          { type: "p", value: "He calls the taxi company on his phone. They say the taxi driver is coming back. Anya is very happy." },
+          { type: "p", value: "\"Thank you, Jake,\" she says." },
+          { type: "p", value: "\"No problem,\" he says. \"Welcome to New York.\"" }
+        ],
+        exercises: [
+          { type: "fill", label: "Напиши пропущенное слово", question: "Anya sits on a b____ near the street.", answer: "bench", quote: "She sits on a bench near the street." },
+          { type: "fill", label: "Напиши пропущенное слово", question: "Jake has a g____r on his back.", answer: "guitar", quote: "He has a guitar on his back." },
+          { type: "fill", label: "Напиши пропущенное слово", question: "Jake is from B______n.", answer: "Brooklyn", quote: "His name is Jake. He is from Brooklyn." },
+          { type: "fill", label: "Напиши пропущенное слово", question: "The taxi d____r is coming back.", answer: "driver", quote: "They say the taxi driver is coming back." },
+          { type: "choice", label: "Выбери правильный вариант", question: "How does Anya feel at the start of the chapter?", options: ["Happy", "Sad", "Angry"], answer: 1 },
+          { type: "choice", label: "Выбери правильный вариант", question: "What does Jake have with him?", options: ["A backpack", "A guitar", "A dog"], answer: 1 },
+          { type: "choice", label: "Выбери правильный вариант", question: "Who does Jake call?", options: ["The police", "His mother", "The taxi company"], answer: 2 },
+          { type: "tf", label: "Правда или ложь", question: "Anya has her phone.", answer: false, quote: "She has no phone and no money." },
+          { type: "tf", label: "Правда или ложь", question: "Jake is from Brooklyn.", answer: true, quote: "His name is Jake. He is from Brooklyn." },
+          { type: "tf", label: "Правда или ложь", question: "Jake can't help Anya.", answer: false, quote: "\"Don't worry. I can help you.\"" },
+          { type: "tf", label: "Правда или ложь", question: "The taxi driver is coming back.", answer: true, quote: "They say the taxi driver is coming back." }
+        ]
+      },
+      {
+        id: 3,
+        title: "Brooklyn Nights",
+        text: [
+          { type: "p", value: "The taxi driver comes back. He gives Anya her backpack. She is very happy. She says \"thank you\" many times." },
+          { type: "img", value: "ch3_a2_1.jpg" },
+          { type: "p", value: "Jake smiles. \"Now you need a good evening,\" he says. \"Come to Brooklyn with me. I play music in a small bar.\"" },
+          { type: "p", value: "Anya thinks for a moment. She is tired, but she is also curious. \"Okay,\" she says." },
+          { type: "p", value: "They take the subway to Brooklyn. The bar is small and warm. Jake plays his guitar. Anya listens and smiles. People clap." },
+          { type: "p", value: "After the music, Jake sits next to her. \"So,\" he says, \"what do you think of New York?\"" },
+          { type: "p", value: "\"It's crazy,\" Anya says. \"But I like it.\"" },
+          { type: "img", value: "ch3_a2_2.jpg" },
+          { type: "p", value: "At the hotel, Anya opens her backpack. Everything is there. But wait — there is a small flash drive in the front pocket. She does not know this flash drive. It is not hers." }
+        ],
+        exercises: [
+          { type: "fill", label: "Напиши пропущенное слово", question: "The taxi driver gives Anya her b______k.", answer: "backpack", quote: "He gives Anya her backpack." },
+          { type: "fill", label: "Напиши пропущенное слово", question: "Jake plays music in a small b___.", answer: "bar", quote: "I play music in a small bar." },
+          { type: "fill", label: "Напиши пропущенное слово", question: "They take the s____y to Brooklyn.", answer: "subway", quote: "They take the subway to Brooklyn." },
+          { type: "fill", label: "Напиши пропущенное слово", question: "Anya finds a flash d____ in her backpack.", answer: "drive", quote: "There is a small flash drive in the front pocket." },
+          { type: "choice", label: "Выбери правильный вариант", question: "Where does Jake invite Anya?", options: ["To his house", "To a bar in Brooklyn", "To a restaurant"], answer: 1 },
+          { type: "choice", label: "Выбери правильный вариант", question: "How does Anya feel at first about going?", options: ["Excited", "Tired but curious", "Angry"], answer: 1 },
+          { type: "choice", label: "Выбери правильный вариант", question: "What does Anya find in her backpack?", options: ["A flash drive", "A letter", "A key"], answer: 0 },
+          { type: "tf", label: "Правда или ложь", question: "The taxi driver doesn't come back.", answer: false, quote: "The taxi driver comes back." },
+          { type: "tf", label: "Правда или ложь", question: "Jake plays the guitar in a bar.", answer: true, quote: "Jake plays his guitar." },
+          { type: "tf", label: "Правда или ложь", question: "Anya knows the flash drive is hers.", answer: false, quote: "She does not know this flash drive. It is not hers." },
+          { type: "tf", label: "Правда или ложь", question: "Anya likes New York.", answer: true, quote: "\"But I like it.\"" }
+        ]
+      },
+      {
+        id: 4,
+        title: "The Wrong Flash Drive",
+        text: [
+          { type: "p", value: "In the morning, Anya looks at the flash drive. She wants to know what is on it. She goes to a small internet café near the hotel." },
+          { type: "img", value: "ch4_a2_1.jpg" },
+          { type: "p", value: "She opens the files. There are many photos and documents. Some files are locked. She does not understand them. But one photo is strange: two men in a dark street, and a big black car." },
+          { type: "p", value: "Anya is scared. She calls Jake." },
+          { type: "p", value: "\"Jake, I need help,\" she says. \"There is something strange on the flash drive.\"" },
+          { type: "p", value: "Jake comes in twenty minutes. He looks at the photo and stops smiling." },
+          { type: "p", value: "\"Anya,\" he says quietly, \"this is not a normal flash drive. You need to be careful.\"" },
+          { type: "img", value: "ch4_a2_2.jpg" },
+          { type: "p", value: "Anya looks out of the window. A man in a dark coat is standing across the street. He is looking at the café." }
+        ],
+        exercises: [
+          { type: "fill", label: "Напиши пропущенное слово", question: "She goes to a small internet c___ near the hotel.", answer: "cafe", quote: "She goes to a small internet café near the hotel." },
+          { type: "fill", label: "Напиши пропущенное слово", question: "There are many photos and d________s on the flash drive.", answer: "documents", quote: "There are many photos and documents." },
+          { type: "fill", label: "Напиши пропущенное слово", question: "Two men are in a dark s____t in the photo.", answer: "street", quote: "Two men in a dark street, and a big black car." },
+          { type: "fill", label: "Напиши пропущенное слово", question: "A man in a dark c___ is standing across the street.", answer: "coat", quote: "A man in a dark coat is standing across the street." },
+          { type: "choice", label: "Выбери правильный вариант", question: "What does Anya want to know?", options: ["Where Jake lives", "What is on the flash drive", "When the taxi comes"], answer: 1 },
+          { type: "choice", label: "Выбери правильный вариант", question: "What is on the flash drive?", options: ["Only music", "Photos and documents", "Nothing"], answer: 1 },
+          { type: "choice", label: "Выбери правильный вариант", question: "How does Jake react to the photo?", options: ["He laughs", "He stops smiling", "He leaves"], answer: 1 },
+          { type: "tf", label: "Правда или ложь", question: "Anya opens the files at the hotel.", answer: false, quote: "She goes to a small internet café near the hotel." },
+          { type: "tf", label: "Правда или ложь", question: "Some files are locked.", answer: true, quote: "Some files are locked." },
+          { type: "tf", label: "Правда или ложь", question: "Jake says everything is normal.", answer: false, quote: "\"This is not a normal flash drive. You need to be careful.\"" },
+          { type: "tf", label: "Правда или ложь", question: "A man is watching the café.", answer: true, quote: "A man in a dark coat is standing across the street. He is looking at the café." }
+        ]
+      },
+      {
+        id: 5,
+        title: "Following the Clues",
+        text: [
+          { type: "p", value: "Jake looks out of the window. \"We need to go,\" he says quietly. \"Now.\"" },
+          { type: "p", value: "They leave the café through the back door. The rain is heavy. They run to the subway station." },
+          { type: "img", value: "ch5_a2_1.jpg" },
+          { type: "p", value: "\"I know a man,\" Jake says. \"His name is Sam. He was a journalist. He can help us.\"" },
+          { type: "p", value: "Sam lives in Queens. He is an old friend of Jake's father. His apartment is small and full of books." },
+          { type: "img", value: "ch5_a2_2.jpg" },
+          { type: "p", value: "Sam looks at the flash drive for a long time. Then he looks at Anya." },
+          { type: "p", value: "\"This is serious,\" he says. \"This flash drive belongs to a dangerous man. His name is Viktor Melnik. Do you know him?\"" },
+          { type: "p", value: "Anya shakes her head. \"No. I don't know him.\"" },
+          { type: "p", value: "\"Then why is his flash drive in your backpack?\" Sam asks." },
+          { type: "p", value: "Nobody knows the answer. But Anya feels one thing: she is not a tourist anymore." }
+        ],
+        exercises: [
+          { type: "fill", label: "Напиши пропущенное слово", question: "Jake says: \"We need to g_.\"", answer: "go", quote: "\"We need to go,\" he says quietly." },
+          { type: "fill", label: "Напиши пропущенное слово", question: "They leave the café through the b___ door.", answer: "back", quote: "They leave the café through the back door." },
+          { type: "fill", label: "Напиши пропущенное слово", question: "Sam was a j________t.", answer: "journalist", quote: "He was a journalist." },
+          { type: "fill", label: "Напиши пропущенное слово", question: "Sam lives in Q____s.", answer: "Queens", quote: "Sam lives in Queens." },
+          { type: "choice", label: "Выбери правильный вариант", question: "Why do they leave the café quickly?", options: ["They are hungry", "The man in the coat is still outside", "Jake has a concert"], answer: 1 },
+          { type: "choice", label: "Выбери правильный вариант", question: "Who is Sam?", options: ["A taxi driver", "An old friend of Jake's father", "A policeman"], answer: 1 },
+          { type: "choice", label: "Выбери правильный вариант", question: "Who does the flash drive belong to?", options: ["Viktor Melnik", "Jake", "Anya"], answer: 0 },
+          { type: "tf", label: "Правда или ложь", question: "The weather is sunny.", answer: false, quote: "The rain is heavy." },
+          { type: "tf", label: "Правда или ложь", question: "Sam is a journalist.", answer: true, quote: "He was a journalist." },
+          { type: "tf", label: "Правда или ложь", question: "Anya knows Viktor Melnik.", answer: false, quote: "\"No. I don't know him.\"" },
+          { type: "tf", label: "Правда или ложь", question: "Anya feels like a normal tourist now.", answer: false, quote: "She is not a tourist anymore." }
+        ]
+      },
+      {
+        id: 6,
+        title: "The Truth",
+        text: [
+          { type: "p", value: "Sam calls a friend. Her name is Monica Reed. She is a journalist too. She writes about bad people. Sam says Monica needs this flash drive." },
+          { type: "p", value: "\"But be careful,\" Sam says. \"Viktor Melnik is a dangerous man.\"" },
+          { type: "img", value: "ch6_a2_1.jpg" },
+          { type: "p", value: "Anya and Jake go to meet Monica. The place is a big café near Central Park. It is full of people. It is safe." },
+          { type: "p", value: "Monica is a tall woman with short hair and kind eyes. She looks at the flash drive and smiles." },
+          { type: "p", value: "\"Thank you,\" she says. \"This is very important for my work. I will not write your names in the story. I promise.\"" },
+          { type: "p", value: "Anya feels happy. The story is over. She is a normal tourist again." },
+          { type: "img", value: "ch6_a2_2.jpg" },
+          { type: "p", value: "But when they go outside, Anya sees a black car. A man in a dark coat is sitting inside. He is looking at them." },
+          { type: "p", value: "\"Jake,\" Anya says quietly. \"He found us.\"" }
+        ],
+        exercises: [
+          { type: "fill", label: "Напиши пропущенное слово", question: "Sam calls a friend. Her name is M____a Reed.", answer: "Monica", quote: "Her name is Monica Reed." },
+          { type: "fill", label: "Напиши пропущенное слово", question: "Monica is a j________t too.", answer: "journalist", quote: "She is a journalist too." },
+          { type: "fill", label: "Напиши пропущенное слово", question: "They meet Monica in a big c___ near Central Park.", answer: "cafe", quote: "The place is a big café near Central Park." },
+          { type: "fill", label: "Напиши пропущенное слово", question: "Monica will not write their n____s in the story.", answer: "names", quote: "I will not write your names in the story." },
+          { type: "choice", label: "Выбери правильный вариант", question: "Why does Monica need the flash drive?", options: ["To sell it", "For her work", "To give it back to Anya"], answer: 1 },
+          { type: "choice", label: "Выбери правильный вариант", question: "What does Monica promise?", options: ["Money", "Not to write their names", "A new phone"], answer: 1 },
+          { type: "choice", label: "Выбери правильный вариант", question: "What does Anya see outside?", options: ["A black car with the man in the coat", "A taxi", "A friend"], answer: 0 },
+          { type: "tf", label: "Правда или ложь", question: "Sam says Melnik is a dangerous man.", answer: true, quote: "\"Viktor Melnik is a dangerous man.\"" },
+          { type: "tf", label: "Правда или ложь", question: "Monica is a short woman with long hair.", answer: false, quote: "Monica is a tall woman with short hair and kind eyes." },
+          { type: "tf", label: "Правда или ложь", question: "Anya feels happy after meeting Monica.", answer: true, quote: "Anya feels happy." },
+          { type: "tf", label: "Правда или ложь", question: "The man in the coat has disappeared.", answer: false, quote: "A man in a dark coat is sitting inside. He is looking at them." }
+        ]
+      },
+      {
+        id: 7,
+        title: "New York, I Love You",
+        text: [
+          { type: "p", value: "\"Run!\" Jake says." },
+          { type: "p", value: "They run through Central Park. The trees are dark. The rain is cold. Anya is scared, but Jake holds her hand." },
+          { type: "img", value: "ch7_a2_1.jpg" },
+          { type: "p", value: "After ten minutes, they stop. The black car is not there. They are safe." },
+          { type: "p", value: "They hide in a small bar. The bar is quiet. There is only one old man at the piano." },
+          { type: "img", value: "ch7_a2_2.jpg" },
+          { type: "p", value: "\"Anya,\" Jake says. \"I am happy about this crazy week. Because I met you.\"" },
+          { type: "p", value: "Anya smiles. \"Me too.\"" },
+          { type: "p", value: "In the morning, Monica writes a message: \"Melnik is in police. Your names are safe. Thank you.\"" },
+          { type: "p", value: "The last day is beautiful. Anya and Jake walk in Brooklyn. They eat pizza. They listen to street music. Anya laughs a lot." },
+          { type: "img", value: "ch7_a2_3.jpg" },
+          { type: "p", value: "At the airport, Jake gives her two things. First — a photo. It is Anya and Jake in the Brooklyn bar. Anya is laughing. Jake is playing his guitar." },
+          { type: "p", value: "\"My friend took this photo that night,\" Jake says. \"I want you to have it.\"" },
+          { type: "p", value: "Then he gives her a small paper ticket." },
+          { type: "p", value: "\"And this is for my concert. In Brooklyn. In six months.\"" },
+          { type: "p", value: "Anya looks at the photo and the ticket. She smiles." },
+          { type: "p", value: "\"So I have to come back?\"" },
+          { type: "p", value: "\"Yes,\" Jake says. \"You have to.\"" },
+          { type: "p", value: "\"Okay,\" Anya says. \"I will.\"" }
+        ],
+        exercises: [
+          { type: "fill", label: "Напиши пропущенное слово", question: "They run through Central P____.", answer: "Park", quote: "They run through Central Park." },
+          { type: "fill", label: "Напиши пропущенное слово", question: "Jake h____s her hand.", answer: "holds", quote: "Jake holds her hand." },
+          { type: "fill", label: "Напиши пропущенное слово", question: "Jake gives Anya a photo and a concert t____t.", answer: "ticket", quote: "Then he gives her a small paper ticket." },
+          { type: "fill", label: "Напиши пропущенное слово", question: "Anya promises to come b___.", answer: "back", quote: "\"I will,\" Anya says." },
+          { type: "choice", label: "Выбери правильный вариант", question: "Where do they run?", options: ["To the hotel", "Through Central Park", "To the subway"], answer: 1 },
+          { type: "choice", label: "Выбери правильный вариант", question: "What does Jake say to Anya in the bar?", options: ["He is sorry", "He is happy he met her", "He wants to go home"], answer: 1 },
+          { type: "choice", label: "Выбери правильный вариант", question: "What does Jake give Anya at the airport?", options: ["A photo and a concert ticket", "Money", "A guitar"], answer: 0 },
+          { type: "tf", label: "Правда или ложь", question: "The black car follows them into the park.", answer: false, quote: "After ten minutes, they stop. The black car is not there." },
+          { type: "tf", label: "Правда или ложь", question: "Monica writes that Melnik is in police.", answer: true, quote: "\"Melnik is in police. Your names are safe.\"" },
+          { type: "tf", label: "Правда или ложь", question: "The last day is rainy and sad.", answer: false, quote: "The last day is beautiful." },
+          { type: "tf", label: "Правда или ложь", question: "Anya promises to come back to New York.", answer: true, quote: "\"I will,\" Anya says." }
+        ]
+      }
+    ]
+  },
+  b2: {
+    chapters: [
+      {
+        id: 1,
+        title: "Arrival",
+        text: [
+          { type: "p", value: "Anya had been dreaming about New York for as long as she could remember. At 22, she had finally saved enough money to fly from Moscow to the city that never sleeps. As the plane touched down at JFK, her heart was racing with a mixture of excitement and sheer terror." },
+          { type: "img", value: "ch1_b2_1.jpg" },
+          { type: "p", value: "She grabbed a yellow cab outside the terminal. The driver, an older man with a thick Brooklyn accent, kept talking about the city — how it was loud, dirty, and absolutely magical. Anya wasn't really listening. She was too busy staring at the skyscrapers rising out of the horizon." },
+          { type: "img", value: "ch1_b2_2.jpg" },
+          { type: "p", value: "It wasn't until she reached the hotel reception that she realised her backpack was gone. She had left it in the trunk of the taxi. Inside were her passport, her phone, and every last dollar she had." },
+          { type: "img", value: "ch1_b2_3.jpg" },
+          { type: "p", value: "She stood in the lobby, frozen. The city hummed outside, indifferent to her panic. She was completely alone." }
+        ],
+        exercises: [
+          { type: "fill", label: "Напиши пропущенное слово", question: "Anya had finally saved enough money to fly from M____w.", answer: "Moscow", quote: "…to fly from Moscow to the city that never sleeps." },
+          { type: "fill", label: "Напиши пропущенное слово", question: "The driver had a thick B______n accent.", answer: "Brooklyn", quote: "The driver, an older man with a thick Brooklyn accent…" },
+          { type: "fill", label: "Напиши пропущенное слово", question: "She had left her backpack in the t____ of the taxi.", answer: "trunk", quote: "She had left it in the trunk of the taxi." },
+          { type: "fill", label: "Напиши пропущенное слово", question: "The city hummed outside, i_________t to her panic.", answer: "indifferent", quote: "The city hummed outside, indifferent to her panic." },
+          { type: "choice", label: "Выбери правильный вариант", question: "How did Anya feel as the plane landed?", options: ["Bored and tired", "Excited and terrified", "Angry and upset"], answer: 1 },
+          { type: "choice", label: "Выбери правильный вариант", question: "What was the driver doing?", options: ["Sleeping", "Talking about the city", "Listening to music"], answer: 1 },
+          { type: "choice", label: "Выбери правильный вариант", question: "Where did she realise her backpack was gone?", options: ["At the airport", "In the taxi", "At the hotel reception"], answer: 2 },
+          { type: "tf", label: "Правда или ложь", question: "Anya is from New York.", answer: false, quote: "…to fly from Moscow to the city that never sleeps." },
+          { type: "tf", label: "Правда или ложь", question: "The taxi driver was friendly.", answer: true, quote: "The driver, an older man with a thick Brooklyn accent, kept talking about the city…" },
+          { type: "tf", label: "Правда или ложь", question: "Her passport was in the backpack.", answer: true, quote: "Inside were her passport, her phone, and every last dollar she had." },
+          { type: "tf", label: "Правда или ложь", question: "Anya knew exactly what to do.", answer: false, quote: "She stood in the lobby, frozen." }
+        ]
+      },
+      {
+        id: 2,
+        title: "The Stranger",
+        text: [
+          { type: "p", value: "Anya stepped out of the hotel, her hands trembling. The city was overwhelming — the noise, the lights, the endless stream of people who didn't even notice her. She sat down on a bench, staring at the pavement, trying to hold back tears." },
+          { type: "img", value: "ch2_b2_1.jpg" },
+          { type: "p", value: "\"Rough day?\" a voice said." },
+          { type: "p", value: "She looked up. A young man, maybe a few years older than her, stood in front of her. He had a guitar case slung over his shoulder and a warm, easy smile." },
+          { type: "img", value: "ch2_b2_2.jpg" },
+          { type: "p", value: "\"I'm Jake,\" he said, sitting down next to her without waiting for an invitation." },
+          { type: "p", value: "Anya hesitated. She wasn't sure she wanted to talk to a stranger. But something about him felt safe." },
+          { type: "p", value: "\"Anya,\" she said quietly. \"I lost my backpack in a taxi. Passport, phone, money — everything.\"" },
+          { type: "p", value: "Jake whistled. \"That's rough. Okay, don't panic. I know a guy who works for a taxi company. Let me make a call.\"" },
+          { type: "p", value: "He pulled out his phone and stepped away for a minute. When he came back, he was grinning." },
+          { type: "img", value: "ch2_b2_3.jpg" },
+          { type: "p", value: "\"Good news. The driver remembers you. He's on his way back.\"" },
+          { type: "p", value: "Anya felt the weight lift off her chest. \"You're serious?\"" },
+          { type: "p", value: "\"Would I lie to you?\" Jake said, and winked." }
+        ],
+        exercises: [
+          { type: "fill", label: "Напиши пропущенное слово", question: "Anya's hands were t_______g as she stepped out of the hotel.", answer: "trembling", quote: "Anya stepped out of the hotel, her hands trembling." },
+          { type: "fill", label: "Напиши пропущенное слово", question: "Jake had a g____r case slung over his shoulder.", answer: "guitar", quote: "He had a guitar case slung over his shoulder…" },
+          { type: "fill", label: "Напиши пропущенное слово", question: "Jake knew a guy who worked for a t___ company.", answer: "taxi", quote: "I know a guy who works for a taxi company." },
+          { type: "fill", label: "Напиши пропущенное слово", question: "Jake said the driver was on his way b___.", answer: "back", quote: "He's on his way back." },
+          { type: "choice", label: "Выбери правильный вариант", question: "How did Anya feel when she stepped out of the hotel?", options: ["Excited", "Overwhelmed", "Bored"], answer: 1 },
+          { type: "choice", label: "Выбери правильный вариант", question: "Why did Anya hesitate at first?", options: ["She didn't speak English", "She wasn't sure about talking to a stranger", "She was in a hurry"], answer: 1 },
+          { type: "choice", label: "Выбери правильный вариант", question: "What did Jake do after calling the taxi company?", options: ["He left", "He was grinning", "He called the police"], answer: 1 },
+          { type: "tf", label: "Правда или ложь", question: "Anya wanted to talk to a stranger at first.", answer: false, quote: "She wasn't sure she wanted to talk to a stranger." },
+          { type: "tf", label: "Правда или ложь", question: "Something about Jake felt safe to Anya.", answer: true, quote: "But something about him felt safe." },
+          { type: "tf", label: "Правда или ложь", question: "The taxi driver didn't remember Anya.", answer: false, quote: "The driver remembers you. He's on his way back." },
+          { type: "tf", label: "Правда или ложь", question: "Jake lied to Anya.", answer: false, quote: "\"Would I lie to you?\" Jake said, and winked." }
+        ]
+      },
+      {
+        id: 3,
+        title: "Brooklyn Nights",
+        text: [
+          { type: "p", value: "The taxi pulled up twenty minutes later. The driver, a tired-looking man in his fifties, handed Anya her backpack with an apologetic shrug. She hugged it like a long-lost friend." },
+          { type: "img", value: "ch3_b2_1.jpg" },
+          { type: "p", value: "\"Now that the crisis is over,\" Jake said, \"you need a proper New York evening. Come to Brooklyn with me. I'm playing at a small bar tonight.\"" },
+          { type: "p", value: "Anya hesitated. She was exhausted, and every instinct told her to go back to her hotel and sleep. But there was something about Jake — something easy and genuine — that made her say yes." },
+          { type: "p", value: "They took the subway to Brooklyn. The bar was small, dimly lit, and full of people who seemed to know each other. When Jake started playing, the room went quiet. His music was simple but honest, and for the first time since she'd landed, Anya felt like she could breathe." },
+          { type: "img", value: "ch3_b2_2.jpg" },
+          { type: "p", value: "After the set, Jake sat down next to her, two beers in hand. \"So,\" he said, \"what do you think of New York?\"" },
+          { type: "p", value: "\"It's insane,\" Anya said, laughing. \"But I think I love it.\"" },
+          { type: "img", value: "ch3_b2_3.jpg" },
+          { type: "p", value: "Back at the hotel, she opened her backpack to check everything was there. Passport — yes. Phone — yes. Money — yes. But in the front pocket, tucked between her notebook and a pack of gum, was a small black flash drive. She had never seen it before. It was definitely not hers." }
+        ],
+        exercises: [
+          { type: "fill", label: "Напиши пропущенное слово", question: "The driver handed Anya her backpack with an apologetic s_____.", answer: "shrug", quote: "…handed Anya her backpack with an apologetic shrug." },
+          { type: "fill", label: "Напиши пропущенное слово", question: "Every i______t told her to go back to her hotel.", answer: "instinct", quote: "…every instinct told her to go back to her hotel and sleep." },
+          { type: "fill", label: "Напиши пропущенное слово", question: "The bar was small, dimly l__, and full of people.", answer: "lit", quote: "The bar was small, dimly lit, and full of people…" },
+          { type: "fill", label: "Напиши пропущенное слово", question: "The flash drive was tucked between her notebook and a pack of g__.", answer: "gum", quote: "…tucked between her notebook and a pack of gum…" },
+          { type: "choice", label: "Выбери правильный вариант", question: "How did Anya feel when she got her backpack back?", options: ["Angry", "Relieved", "Indifferent"], answer: 1 },
+          { type: "choice", label: "Выбери правильный вариант", question: "Why did Anya hesitate to go to Brooklyn?", options: ["She didn't like Jake", "She was exhausted", "She had no money"], answer: 1 },
+          { type: "choice", label: "Выбери правильный вариант", question: "How did Anya feel during Jake's performance?", options: ["Bored", "Like she could finally breathe", "Nervous"], answer: 1 },
+          { type: "tf", label: "Правда или ложь", question: "Anya was full of energy when Jake invited her out.", answer: false, quote: "She was exhausted, and every instinct told her to go back to her hotel and sleep." },
+          { type: "tf", label: "Правда или ложь", question: "The bar was crowded with strangers.", answer: false, quote: "The bar was small, dimly lit, and full of people who seemed to know each other." },
+          { type: "tf", label: "Правда или ложь", question: "Anya was sure the flash drive was hers.", answer: false, quote: "She had never seen it before. It was definitely not hers." },
+          { type: "tf", label: "Правда или ложь", question: "Anya liked Jake's music.", answer: true, quote: "His music was simple but honest, and for the first time since she'd landed, Anya felt like she could breathe." }
+        ]
+      },
+      {
+        id: 4,
+        title: "The Wrong Flash Drive",
+        text: [
+          { type: "p", value: "Anya barely slept. All night, the little black flash drive sat on the nightstand, and all night she kept glancing at it, as if it might suddenly explain itself. By morning, curiosity had won." },
+          { type: "img", value: "ch4_b2_1.jpg" },
+          { type: "p", value: "She didn't have her laptop — it was still in Moscow — so she found a small internet café two blocks from the hotel. The place smelled of old coffee and rain. She paid for an hour, sat down at a computer, and plugged the flash drive in." },
+          { type: "p", value: "The files were not what she expected. There were dozens of photographs — meetings in parking garages, handshakes on street corners, a man in a suit walking into a building she didn't recognise. There were also spreadsheets with names, dates, and numbers. Some files were password-protected." },
+          { type: "img", value: "ch4_b2_2.jpg" },
+          { type: "p", value: "One photo made her stop. Two men in a dark alley, and behind them — a black car with no license plate. Something about it felt wrong. It felt like evidence." },
+          { type: "p", value: "Her hands were shaking when she called Jake." },
+          { type: "p", value: "\"There's something on this flash drive,\" she said. \"I don't know what it is, but it's not mine. Someone must be looking for it.\"" },
+          { type: "p", value: "Jake arrived twenty minutes later. He looked at the screen for a long time without saying anything. Then he leaned back and rubbed his face." },
+          { type: "p", value: "\"Anya,\" he said quietly, \"I think you're in trouble. We both are.\"" },
+          { type: "img", value: "ch4_b2_3.jpg" },
+          { type: "p", value: "She looked up. Through the café window, on the other side of the street, a man in a dark coat was standing perfectly still. He wasn't looking at the café. He was looking at her." }
+        ],
+        exercises: [
+          { type: "fill", label: "Напиши пропущенное слово", question: "By morning, c_______y had won.", answer: "curiosity", quote: "By morning, curiosity had won." },
+          { type: "fill", label: "Напиши пропущенное слово", question: "The café smelled of old coffee and r___.", answer: "rain", quote: "The place smelled of old coffee and rain." },
+          { type: "fill", label: "Напиши пропущенное слово", question: "Some files were password-p________d.", answer: "protected", quote: "Some files were password-protected." },
+          { type: "fill", label: "Напиши пропущенное слово", question: "A man in a dark coat was standing perfectly s____.", answer: "still", quote: "…a man in a dark coat was standing perfectly still." },
+          { type: "choice", label: "Выбери правильный вариант", question: "Why did Anya go to an internet café?", options: ["To meet Jake", "She didn't have her laptop", "To check her email"], answer: 1 },
+          { type: "choice", label: "Выбери правильный вариант", question: "What made Anya stop while looking at the files?", options: ["A photo of two men and a black car", "A password", "A video"], answer: 0 },
+          { type: "choice", label: "Выбери правильный вариант", question: "How did Jake react to the files?", options: ["He laughed", "He said they were both in trouble", "He called the police"], answer: 1 },
+          { type: "tf", label: "Правда или ложь", question: "Anya slept well that night.", answer: false, quote: "Anya barely slept." },
+          { type: "tf", label: "Правда или ложь", question: "The flash drive contained evidence.", answer: true, quote: "Something about it felt wrong. It felt like evidence." },
+          { type: "tf", label: "Правда или ложь", question: "Jake knew immediately what to do.", answer: false, quote: "He looked at the screen for a long time without saying anything." },
+          { type: "tf", label: "Правда или ложь", question: "The man across the street was looking at Anya.", answer: true, quote: "He wasn't looking at the café. He was looking at her." }
+        ]
+      },
+      {
+        id: 5,
+        title: "Following the Clues",
+        text: [
+          { type: "p", value: "Jake glanced toward the window. The man in the dark coat was still there, motionless, like he had all the time in the world. \"We need to leave,\" Jake said, his voice low. \"Right now.\"" },
+          { type: "img", value: "ch5_b2_1.jpg" },
+          { type: "p", value: "They slipped out through the back door of the café into a narrow alley. The rain was falling hard, and within seconds they were soaked. They ran two blocks to the nearest subway station, not looking back once." },
+          { type: "img", value: "ch5_b2_2.jpg" },
+          { type: "p", value: "\"I know someone who might help,\" Jake said as they descended the stairs. \"An old friend of my father's. His name is Sam. He used to be an investigative journalist — before he retired.\"" },
+          { type: "p", value: "\"Can we trust him?\" Anya asked." },
+          { type: "p", value: "\"I trust him with my life,\" Jake said." },
+          { type: "p", value: "Sam lived in Queens, in a small apartment that smelled of dust and paper. Books lined every wall, stacked in towers on the floor. He was a quiet, careful man with grey eyes that missed nothing." },
+          { type: "img", value: "ch5_b2_3.jpg" },
+          { type: "p", value: "He studied the flash drive for a long time. Then he looked up at Anya, and his expression had changed." },
+          { type: "p", value: "\"This is more serious than you think,\" he said. \"This flash drive belongs to a man named Viktor Melnik. He's not just a criminal — he's the kind of criminal who has friends in very high places. Do you know him?\"" },
+          { type: "p", value: "Anya shook her head slowly. \"I've never heard that name in my life.\"" },
+          { type: "p", value: "\"Then the question,\" Sam said, \"is why his flash drive ended up in your backpack.\"" },
+          { type: "p", value: "Nobody had an answer. Outside, the rain kept falling. And somewhere in the city, Anya understood, someone was already looking for her." }
+        ],
+        exercises: [
+          { type: "fill", label: "Напиши пропущенное слово", question: "The man was still there, m________s.", answer: "motionless", quote: "…the man in the dark coat was still there, motionless…" },
+          { type: "fill", label: "Напиши пропущенное слово", question: "They slipped out through the back door into a narrow a___.", answer: "alley", quote: "…into a narrow alley." },
+          { type: "fill", label: "Напиши пропущенное слово", question: "Sam used to be an investigative j________t.", answer: "journalist", quote: "He used to be an investigative journalist…" },
+          { type: "fill", label: "Напиши пропущенное слово", question: "The flash drive belongs to a man named Viktor M____k.", answer: "Melnik", quote: "…a man named Viktor Melnik." },
+          { type: "choice", label: "Выбери правильный вариант", question: "Why did Jake want to leave quickly?", options: ["He had to work", "The man in the coat was still watching", "He forgot his guitar"], answer: 1 },
+          { type: "choice", label: "Выбери правильный вариант", question: "What kind of man is Sam?", options: ["Loud and careless", "Quiet and careful", "Young and nervous"], answer: 1 },
+          { type: "choice", label: "Выбери правильный вариант", question: "Why is Viktor Melnik dangerous?", options: ["He has a big dog", "He has friends in very high places", "He is a taxi driver"], answer: 1 },
+          { type: "tf", label: "Правда или ложь", question: "Anya and Jake ran without looking back.", answer: true, quote: "…not looking back once." },
+          { type: "tf", label: "Правда или ложь", question: "Jake fully trusts Sam.", answer: true, quote: "\"I trust him with my life,\" Jake said." },
+          { type: "tf", label: "Правда или ложь", question: "Anya had heard of Viktor Melnik before.", answer: false, quote: "\"I've never heard that name in my life.\"" },
+          { type: "tf", label: "Правда или ложь", question: "By the end of the chapter, Anya understands someone is looking for her.", answer: true, quote: "…someone was already looking for her." }
+        ]
+      },
+      {
+        id: 6,
+        title: "The Truth",
+        text: [
+          { type: "p", value: "Sam made one phone call. He spoke quietly, in short sentences, and hung up without saying goodbye. Then he turned to them." },
+          { type: "p", value: "\"Her name is Monica Reed,\" he said. \"She's an investigative journalist — one of the best. She's been trying to take Melnik down for two years. This flash drive is exactly what she needs.\"" },
+          { type: "p", value: "\"So we give it to her and we're done?\" Anya asked." },
+          { type: "p", value: "\"In theory,\" Sam said. \"But listen to me carefully. Melnik isn't the kind of man who forgets. If he finds out you had this, he won't stop looking for you. You need to disappear from his radar the moment you hand it over.\"" },
+          { type: "img", value: "ch6_b2_1.jpg" },
+          { type: "p", value: "They arranged to meet Monica at a busy café near Central Park — public, crowded, safe. She was already there when they arrived: a tall woman with short grey hair and eyes that seemed to read people in seconds." },
+          { type: "img", value: "ch6_b2_2.jpg" },
+          { type: "p", value: "She examined the flash drive briefly, then looked up and nodded slowly." },
+          { type: "p", value: "\"You have no idea what you've just done,\" she said. \"This is the evidence we've been missing for years. Thank you.\"" },
+          { type: "p", value: "\"Will our names be in your article?\" Anya asked." },
+          { type: "p", value: "\"No,\" Monica said firmly. \"You were never here. I promise.\"" },
+          { type: "p", value: "For a moment, Anya felt something she hadn't felt in days: relief. It was over. She could go back to being a tourist." },
+          { type: "img", value: "ch6_b2_3.jpg" },
+          { type: "p", value: "But as they stepped out of the café, she stopped. Across the street, a black car was parked at the curb. And inside, watching them through the rain-streaked window, sat the man in the dark coat." },
+          { type: "p", value: "\"Jake,\" she whispered. \"He found us.\"" }
+        ],
+        exercises: [
+          { type: "fill", label: "Напиши пропущенное слово", question: "Monica has been trying to take Melnik d___n for two years.", answer: "down", quote: "She's been trying to take Melnik down for two years." },
+          { type: "fill", label: "Напиши пропущенное слово", question: "You need to d________r from his radar.", answer: "disappear", quote: "You need to disappear from his radar…" },
+          { type: "fill", label: "Напиши пропущенное слово", question: "She examined the flash drive b_____y.", answer: "briefly", quote: "She examined the flash drive briefly…" },
+          { type: "fill", label: "Напиши пропущенное слово", question: "Anya felt something she hadn't felt in days: r_____f.", answer: "relief", quote: "…relief." },
+          { type: "choice", label: "Выбери правильный вариант", question: "What kind of journalist is Monica?", options: ["A fashion journalist", "An investigative journalist", "A sports journalist"], answer: 1 },
+          { type: "choice", label: "Выбери правильный вариант", question: "Why is it dangerous for Anya to keep the flash drive?", options: ["Melnik will stop looking", "Melnik won't stop looking for her", "The flash drive is broken"], answer: 1 },
+          { type: "choice", label: "Выбери правильный вариант", question: "Why did they choose a busy café?", options: ["It was cheap", "Public and crowded meant safer", "Monica liked the coffee"], answer: 1 },
+          { type: "tf", label: "Правда или ложь", question: "Sam spoke to Monica in a long, detailed conversation.", answer: false, quote: "He spoke quietly, in short sentences, and hung up without saying goodbye." },
+          { type: "tf", label: "Правда или ложь", question: "Monica has been after Melnik for years.", answer: true, quote: "She's been trying to take Melnik down for two years." },
+          { type: "tf", label: "Правда или ложь", question: "Monica refused to take the flash drive.", answer: false, quote: "You have no idea what you've just done… Thank you." },
+          { type: "tf", label: "Правда или ложь", question: "Anya felt relief when they left the café.", answer: true, quote: "For a moment, Anya felt something she hadn't felt in days: relief." }
+        ]
+      },
+      {
+        id: 7,
+        title: "New York, I Love You",
+        text: [
+          { type: "p", value: "\"Run,\" Jake said. It wasn't a question." },
+          { type: "p", value: "They ran. Through the crowds, across the street, into Central Park. The trees swallowed them whole, and the city noise faded behind them. Anya's lungs were burning, but Jake's hand was firm around hers, and she didn't let go." },
+          { type: "img", value: "ch7_b2_1.jpg" },
+          { type: "p", value: "After ten minutes, they stopped under a bridge. The black car was gone. They were alone, breathing hard, soaking wet." },
+          { type: "p", value: "\"We lost him,\" Jake said. \"For now.\"" },
+          { type: "p", value: "They found shelter in a small bar on the Upper West Side — the kind of place that didn't ask questions. An old man was playing piano in the corner. There was no one else there but them." },
+          { type: "img", value: "ch7_b2_2.jpg" },
+          { type: "p", value: "For a long time, neither of them spoke. Then Jake said, quietly:" },
+          { type: "p", value: "\"You know what's strange? I'm not sorry about any of this. Not the chase, not the fear. Because it meant I met you.\"" },
+          { type: "p", value: "Anya looked at him. \"Me too.\"" },
+          { type: "p", value: "In the morning, her phone buzzed. A message from Monica: Melnik has been arrested. Your names are not in the story. You're safe. Thank you." },
+          { type: "p", value: "Anya read it twice. Then she smiled — a real smile, for the first time in days." },
+          { type: "p", value: "The last day was golden. They walked through Brooklyn, ate pizza on a bench, listened to a street musician play something that sounded like home. Anya laughed more than she had in years. She felt like she'd been in New York forever, and also like she was seeing it for the first time." },
+          { type: "img", value: "ch7_b2_3.jpg" },
+          { type: "p", value: "At JFK, in front of the departures gate, Jake handed her two things." },
+          { type: "p", value: "The first was a photograph. It had been taken in the Brooklyn bar on that first night — she was laughing, her head thrown back, and he was on stage with his guitar, looking at her. She hadn't even noticed anyone taking it." },
+          { type: "p", value: "\"My friend Daniel took it,\" Jake said. \"He gave it to me the next day. I've been carrying it around ever since.\"" },
+          { type: "p", value: "The second was a small paper ticket." },
+          { type: "p", value: "\"My next big show,\" he said. \"Brooklyn, six months from now. Front row. I saved it for you.\"" },
+          { type: "p", value: "Anya looked at the photo, then at the ticket, then at him. \"So this is your way of making sure I come back?\"" },
+          { type: "p", value: "\"Something like that,\" Jake said, and smiled." },
+          { type: "p", value: "\"Then I guess I have no choice,\" she said. And this time, she wasn't pretending to be brave. She meant it." }
+        ],
+        exercises: [
+          { type: "fill", label: "Напиши пропущенное слово", question: "The trees s________d them whole.", answer: "swallowed", quote: "The trees swallowed them whole…" },
+          { type: "fill", label: "Напиши пропущенное слово", question: "Anya's lungs were b______g.", answer: "burning", quote: "Anya's lungs were burning…" },
+          { type: "fill", label: "Напиши пропущенное слово", question: "Melnik has been a______d.", answer: "arrested", quote: "Melnik has been arrested." },
+          { type: "fill", label: "Напиши пропущенное слово", question: "Jake handed her a small paper t____t.", answer: "ticket", quote: "The second was a small paper ticket." },
+          { type: "choice", label: "Выбери правильный вариант", question: "Why did they go into Central Park?", options: ["To see the trees", "To escape the man in the car", "To meet Monica"], answer: 1 },
+          { type: "choice", label: "Выбери правильный вариант", question: "What did Jake say in the bar?", options: ["He regretted meeting Anya", "He wasn't sorry about anything, because he met her", "He wanted to leave New York"], answer: 1 },
+          { type: "choice", label: "Выбери правильный вариант", question: "What did Jake give Anya at the airport?", options: ["A photo and a concert ticket", "Money", "A guitar"], answer: 0 },
+          { type: "tf", label: "Правда или ложь", question: "They managed to lose the man in the car.", answer: true, quote: "The black car was gone." },
+          { type: "tf", label: "Правда или ложь", question: "Monica told the press their names.", answer: false, quote: "Your names are not in the story." },
+          { type: "tf", label: "Правда или ложь", question: "Anya laughed more than she had in years.", answer: true, quote: "Anya laughed more than she had in years." },
+          { type: "tf", label: "Правда или ложь", question: "When Anya said she would come back, she meant it.", answer: true, quote: "…she wasn't pretending to be brave. She meant it." }
+        ]
+      }
+    ]
+  }
+};
+
+const TOTAL_CHAPTERS = 7;
+
+// ============ СОСТОЯНИЕ ============
+let state = {
+  level: null,
+  screen: "start",
+  chapterIndex: 0,
+  answers: {},
+  currentExercise: 0
+};
+
+let progress = JSON.parse(localStorage.getItem("liny_progress") || "{}");
+
+function saveProgress() {
+  localStorage.setItem("liny_progress", JSON.stringify(progress));
+}
+
+function getLevelProgress() {
+  if (!state.level) return {};
+  if (!progress[state.level]) progress[state.level] = {};
+  return progress[state.level];
+}
+
+const app = document.getElementById("app");
+
+// ============ РЕНДЕР ============
+function render() {
+  if (state.screen === "start") renderStart();
+  else if (state.screen === "map") renderMap();
+  else if (state.screen === "chapter") renderChapter();
+  else if (state.screen === "exercises") renderExercises();
+  else if (state.screen === "result") renderResult();
+}
+
+function renderStart() {
+  app.innerHTML = `
+    <h1>Lost in New York</h1>
+    <p class="subtitle">Интерактивная история для изучения английского</p>
+    <p>Выбери уровень:</p>
+    <button onclick="chooseLevel('a2')">A2 — Elementary</button>
+    <button class="secondary" onclick="chooseLevel('b2')">B2 — Upper-Intermediate</button>
+  `;
+}
+
+function chooseLevel(level) {
+  state.level = level;
+  state.screen = "map";
+  render();
+}
+
+function renderMap() {
+  const chapters = content[state.level].chapters;
+  const lp = getLevelProgress();
+
+  let html = `
+    <div class="topnav">
+      <span class="level-tag">Уровень ${state.level.toUpperCase()}</span>
+      <button class="secondary" onclick="backToStart()">Сменить уровень</button>
+    </div>
+    <h1>Lost in New York</h1>
+    <p class="subtitle">Выбери главу</p>
+    <div class="chapter-map">
+  `;
+
+  for (let i = 1; i <= TOTAL_CHAPTERS; i++) {
+    const chapter = chapters[i - 1];
+    const isDone = lp[i] && lp[i].done;
+    const isAvailable = i === 1 || (lp[i - 1] && lp[i - 1].done);
+    const isLocked = !isAvailable;
+
+    let cls = "chapter-btn";
+    if (isDone) cls += " done";
+    if (isLocked) cls += " locked";
+
+    let status = "🔒";
+    if (isDone) status = "✅";
+    else if (isAvailable) status = "▶️";
+
+    const title = chapter ? chapter.title : "Скоро...";
+
+    html += `
+      <button class="${cls}" 
+              ${isLocked || !chapter ? "disabled" : ""} 
+              onclick="openChapter(${i - 1})">
+        <div class="chapter-num">${i}</div>
+        <div class="chapter-title">${title}</div>
+        <div class="chapter-status">${status}</div>
+      </button>
+    `;
+  }
+
+  html += `</div>`;
+  app.innerHTML = html;
+}
+
+function backToStart() {
+  state.level = null;
+  state.screen = "start";
+  render();
+}
+
+function openChapter(index) {
+  state.chapterIndex = index;
+  state.screen = "chapter";
+  render();
+}
+
+function backToMap() {
+  state.screen = "map";
+  render();
+}
+
+function renderChapter() {
+  const c = content[state.level].chapters[state.chapterIndex];
+  let html = `
+    <div class="topnav">
+      <button class="secondary" onclick="backToMap()">← Главы</button>
+      <span class="level-tag">${state.level.toUpperCase()}</span>
+    </div>
+    <h1>Chapter ${c.id}: ${c.title}</h1>
+  `;
+  c.text.forEach(block => {
+    if (block.type === "p") {
+      html += `<p>${block.value}</p>`;
+    } else if (block.type === "img") {
+      html += renderImage(block.value);
+    }
+  });
+  html += `<button onclick="startExercises()">К заданиям →</button>`;
+  app.innerHTML = html;
+}
+
+function renderImage(filename) {
+  return `
+    <div class="img-placeholder" id="img-${filename}">
+      🖼 ${filename}
+    </div>
+    <img src="images/${filename}" class="chapter-img hidden" 
+         onload="document.getElementById('img-${filename}').classList.add('hidden'); this.classList.remove('hidden');"
+         onerror="this.remove();">
+  `;
+}
+
+function startExercises() {
+  state.screen = "exercises";
+  state.currentExercise = 0;
+  state.answers = {};
+  render();
+}
+
+function renderExercises() {
+  const c = content[state.level].chapters[state.chapterIndex];
+  const total = c.exercises.length;
+  const idx = state.currentExercise;
+
+  if (idx >= total) {
+    state.screen = "result";
+    render();
+    return;
+  }
+
+  const ex = c.exercises[idx];
+  const progressPct = (idx / total) * 100;
+
+  let html = `
+    <div class="progress-bar"><div class="progress-fill" style="width:${progressPct}%"></div></div>
+    <p class="subtitle">Задание ${idx + 1} из ${total}</p>
+    <div class="exercise">
+      <div class="exercise-label">${ex.label}</div>
+      <div class="question">${ex.question}</div>
+  `;
+
+  if (ex.type === "fill") {
+    html += `<input type="text" id="user-input" placeholder="Впиши слово..." autocomplete="off">`;
+  } else if (ex.type === "choice") {
+    html += `<div class="options">`;
+    ex.options.forEach((opt, i) => {
+      html += `<button class="option" id="opt-${i}" onclick="selectOption(${i})">${opt}</button>`;
+    });
+    html += `</div>`;
+  } else if (ex.type === "tf") {
+    html += `<div class="tf-row">
+      <button class="option" id="opt-true" onclick="selectTF(true)">True</button>
+      <button class="option" id="opt-false" onclick="selectTF(false)">False</button>
+    </div>`;
+  }
+
+  html += `<div id="feedback"></div>`;
+  html += `<button id="check-btn" onclick="checkAnswer()">Проверить</button>`;
+  html += `</div>`;
+
+  app.innerHTML = html;
+
+  const inp = document.getElementById("user-input");
+  if (inp) {
+    inp.focus();
+    inp.addEventListener("keydown", e => {
+      if (e.key === "Enter") checkAnswer();
+    });
+  }
+}
+
+let selectedValue = null;
+
+function selectOption(i) {
+  selectedValue = i;
+  document.querySelectorAll(".option").forEach(el => el.classList.remove("selected"));
+  document.getElementById(`opt-${i}`).classList.add("selected");
+}
+
+function selectTF(val) {
+  selectedValue = val;
+  document.querySelectorAll(".option").forEach(el => el.classList.remove("selected"));
+  document.getElementById(`opt-${val ? "true" : "false"}`).classList.add("selected");
+}
+
+const normalize = s => s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+
+function checkAnswer() {
+  const c = content[state.level].chapters[state.chapterIndex];
+  const ex = c.exercises[state.currentExercise];
+  let userAnswer = null;
+  let isCorrect = false;
+
+  if (ex.type === "fill") {
+    const inp = document.getElementById("user-input");
+    userAnswer = inp.value.trim();
+    if (!userAnswer) return;
+    isCorrect = normalize(userAnswer) === normalize(ex.answer);
+  } else if (ex.type === "choice") {
+    if (selectedValue === null) return;
+    userAnswer = selectedValue;
+    isCorrect = selectedValue === ex.answer;
+  } else if (ex.type === "tf") {
+    if (selectedValue === null) return;
+    userAnswer = selectedValue;
+    isCorrect = selectedValue === ex.answer;
+  }
+
+  state.answers[state.currentExercise] = { correct: isCorrect, userAnswer };
+
+  const fb = document.getElementById("feedback");
+  const checkBtn = document.getElementById("check-btn");
+
+  if (isCorrect) {
+    fb.className = "feedback correct";
+    let quoteHtml = "";
+    if (ex.quote) {
+      quoteHtml = `<div class="quote">📖 «${ex.quote}»</div>`;
+    }
+    fb.innerHTML = `✅ Верно!${quoteHtml}`;
+  } else {
+    fb.className = "feedback wrong";
+    let correctText = "";
+    if (ex.type === "fill") correctText = ex.answer;
+    else if (ex.type === "choice") correctText = ex.options[ex.answer];
+    else if (ex.type === "tf") correctText = ex.answer ? "True" : "False";
+
+    let quoteHtml = "";
+    if (ex.quote) {
+      quoteHtml = `<div class="quote">📖 «${ex.quote}»</div>`;
+    }
+
+    fb.innerHTML = `❌ Неправильно. Правильный ответ: <b>${correctText}</b>${quoteHtml}`;
+  }
+
+  if (ex.type === "choice") {
+    document.getElementById(`opt-${ex.answer}`).classList.add("correct");
+    if (!isCorrect && userAnswer !== null) {
+      document.getElementById(`opt-${userAnswer}`).classList.add("wrong");
+    }
+  } else if (ex.type === "tf") {
+    document.getElementById(`opt-${ex.answer ? "true" : "false"}`).classList.add("correct");
+    if (!isCorrect && userAnswer !== null) {
+      document.getElementById(`opt-${userAnswer ? "true" : "false"}`).classList.add("wrong");
+    }
+  }
+
+  checkBtn.textContent = "Далее →";
+  checkBtn.onclick = nextExercise;
+
+  const inp = document.getElementById("user-input");
+  if (inp) inp.disabled = true;
+  document.querySelectorAll(".option").forEach(el => el.onclick = null);
+}
+
+function nextExercise() {
+  state.currentExercise++;
+  selectedValue = null;
+  render();
+}
+
+function renderResult() {
+  const c = content[state.level].chapters[state.chapterIndex];
+  const total = c.exercises.length;
+  const correct = Object.values(state.answers).filter(a => a.correct).length;
+  const percent = Math.round((correct / total) * 100);
+
+  const lp = getLevelProgress();
+  lp[c.id] = { done: true, correct, total, percent };
+  saveProgress();
+
+  const isLastChapter = state.chapterIndex >= content[state.level].chapters.length - 1;
+
+  if (isLastChapter) {
+    renderFinalScreen(correct, total, percent);
+    return;
+  }
+
+  let emoji = "🎉";
+  let msg = "Отлично!";
+  if (percent < 50) { emoji = "💪"; msg = "Есть над чем поработать."; }
+  else if (percent < 80) { emoji = "👍"; msg = "Хороший результат!"; }
+
+  app.innerHTML = `
+    <div class="result-box">
+      <div class="big">${emoji}</div>
+      <h1>${msg}</h1>
+      <p>Глава ${c.id} завершена</p>
+      <p style="font-size:24px; font-weight:bold; color:#93c5fd; margin-top:16px;">
+        ${correct} / ${total} (${percent}%)
+      </p>
+    </div>
+    <button onclick="backToMap()">← К выбору глав</button>
+    <button class="secondary" onclick="openChapter(${state.chapterIndex + 1})">Следующая глава →</button>
+  `;
+}
+
+function renderFinalScreen(correct, total, percent) {
+  const lp = getLevelProgress();
+  let totalCorrect = 0;
+  let totalExercises = 0;
+  for (let i = 1; i <= TOTAL_CHAPTERS; i++) {
+    if (lp[i]) {
+      totalCorrect += lp[i].correct;
+      totalExercises += lp[i].total;
+    }
+  }
+  const overallPercent = Math.round((totalCorrect / totalExercises) * 100);
+
+  const otherLevel = state.level === 'a2' ? 'b2' : 'a2';
+  const otherLevelName = state.level === 'a2' ? 'B2' : 'A2';
+
+  app.innerHTML = `
+    <div class="final-screen">
+      <span class="emoji">🎉</span>
+      <h1>Поздравляем!</h1>
+      <p class="story-title">Ты прочитал всю книгу «Lost in New York» на уровне ${state.level.toUpperCase()}</p>
+      
+      <div class="final-stats">
+        <div class="stat-row">
+          <span>Глав пройдено</span>
+          <span class="stat-value">7 / 7</span>
+        </div>
+        <div class="stat-row">
+          <span>Правильных ответов</span>
+          <span class="stat-value">${totalCorrect} / ${totalExercises}</span>
+        </div>
+        <div class="stat-row">
+          <span>Общий результат</span>
+          <span class="stat-value">${overallPercent}%</span>
+        </div>
+      </div>
+
+      <p class="final-thanks">
+        Спасибо, что был с Аней и Джейком в их первой поездке в Нью-Йорк.<br>
+        До новых встреч в городе, который никогда не спит. 🗽
+      </p>
+
+      <button onclick="backToStart()">Пройти уровень ${otherLevelName} →</button>
+      <button class="secondary" onclick="backToMap()">← К выбору глав</button>
+    </div>
+  `;
+}
+
+render();
+</script>
+</body>
+</html>
