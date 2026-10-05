@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Lost in New York</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -254,12 +255,31 @@
     margin: 20px 0;
     font-style: italic;
   }
+  .user-greeting {
+    font-size: 13px;
+    color: #94a3b8;
+    margin-bottom: 16px;
+    text-align: center;
+  }
 </style>
 </head>
 <body>
 <div class="app" id="app"></div>
 
 <script>
+// ============ TELEGRAM WEB APP ============
+const tg = window.Telegram?.WebApp;
+let telegramUser = null;
+
+if (tg) {
+  tg.ready();
+  tg.expand();
+  telegramUser = tg.initDataUnsafe?.user || null;
+  if (telegramUser) {
+    console.log("Telegram user:", telegramUser);
+  }
+}
+
 // ============ КОНТЕНТ ============
 const content = {
   a2: {
@@ -741,7 +761,12 @@ function render() {
 }
 
 function renderStart() {
+  let greeting = "";
+  if (telegramUser && telegramUser.first_name) {
+    greeting = `<p class="user-greeting">Привет, ${telegramUser.first_name}! 👋</p>`;
+  }
   app.innerHTML = `
+    ${greeting}
     <h1>Lost in New York</h1>
     <p class="subtitle">Интерактивная история для изучения английского</p>
     <p>Выбери уровень:</p>
@@ -1046,7 +1071,6 @@ function renderFinalScreen(correct, total, percent) {
   }
   const overallPercent = Math.round((totalCorrect / totalExercises) * 100);
 
-  const otherLevel = state.level === 'a2' ? 'b2' : 'a2';
   const otherLevelName = state.level === 'a2' ? 'B2' : 'A2';
 
   app.innerHTML = `
@@ -1081,6 +1105,7 @@ function renderFinalScreen(correct, total, percent) {
   `;
 }
 
+// Запуск
 render();
 </script>
 </body>
