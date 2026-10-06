@@ -14,31 +14,32 @@
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    padding: 20px;
+    padding: 0;
   }
   .app {
     width: 100%;
     max-width: 480px;
     background: #1e293b;
-    border-radius: 20px;
-    padding: 24px;
+    border-radius: 0;
+    padding: 16px;
     box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    min-height: 100vh;
   }
-  h1 { font-size: 22px; margin-bottom: 8px; color: #fff; }
-  h2 { font-size: 18px; margin: 16px 0 8px; color: #93c5fd; }
-  p { line-height: 1.6; margin-bottom: 12px; font-size: 15px; }
-  .subtitle { color: #94a3b8; font-size: 14px; margin-bottom: 20px; }
+  h1 { font-size: 24px; margin-bottom: 8px; color: #fff; }
+  h2 { font-size: 19px; margin: 14px 0 8px; color: #93c5fd; }
+  p { line-height: 1.6; margin-bottom: 12px; font-size: 16px; }
+  .subtitle { color: #94a3b8; font-size: 15px; margin-bottom: 16px; }
   button {
     background: #3b82f6;
     color: #fff;
     border: none;
-    padding: 12px 20px;
+    padding: 13px 20px;
     border-radius: 12px;
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 600;
     cursor: pointer;
     width: 100%;
-    margin-top: 12px;
+    margin-top: 10px;
     transition: background 0.2s;
   }
   button:hover { background: #2563eb; }
@@ -55,7 +56,7 @@
     justify-content: center;
     color: #64748b;
     font-size: 13px;
-    margin: 16px 0;
+    margin: 12px 0;
     text-align: center;
     padding: 10px;
     border: 2px dashed #475569;
@@ -63,14 +64,14 @@
   img.chapter-img {
     width: 100%;
     border-radius: 12px;
-    margin: 16px 0;
+    margin: 12px 0;
     display: block;
   }
   .exercise {
     background: #0f172a;
     border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 16px;
+    padding: 14px;
+    margin-bottom: 12px;
   }
   .exercise-label {
     font-size: 12px;
@@ -79,28 +80,28 @@
     margin-bottom: 8px;
     letter-spacing: 1px;
   }
-  .question { font-size: 15px; margin-bottom: 12px; color: #f1f5f9; }
+  .question { font-size: 16px; margin-bottom: 12px; color: #f1f5f9; }
   input[type="text"] {
     width: 100%;
-    padding: 10px 14px;
+    padding: 12px 14px;
     border-radius: 10px;
     border: 2px solid #334155;
     background: #1e293b;
     color: #fff;
-    font-size: 15px;
+    font-size: 16px;
     outline: none;
   }
   input[type="text"]:focus { border-color: #3b82f6; }
   input[type="text"]:disabled { opacity: 0.6; }
   .options { display: flex; flex-direction: column; gap: 8px; }
   .option {
-    padding: 10px 14px;
+    padding: 12px 14px;
     border-radius: 10px;
     border: 2px solid #334155;
     background: #1e293b;
     color: #e2e8f0;
     cursor: pointer;
-    font-size: 15px;
+    font-size: 16px;
     text-align: left;
     transition: all 0.15s;
     width: 100%;
@@ -116,7 +117,7 @@
     margin-top: 12px;
     padding: 12px;
     border-radius: 10px;
-    font-size: 14px;
+    font-size: 15px;
     line-height: 1.5;
   }
   .feedback.correct { background: #14532d; color: #bbf7d0; }
@@ -129,13 +130,13 @@
     border-radius: 6px;
     font-style: italic;
     color: #fde68a;
-    font-size: 13px;
+    font-size: 14px;
   }
   .progress-bar {
     height: 6px;
     background: #334155;
     border-radius: 3px;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
     overflow: hidden;
   }
   .progress-fill {
@@ -150,14 +151,14 @@
     border-radius: 12px;
     padding: 20px;
     text-align: center;
-    margin-top: 16px;
+    margin-top: 14px;
   }
   .big { font-size: 40px; margin-bottom: 8px; }
   .chapter-map {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    margin-top: 16px;
+    margin-top: 14px;
   }
   .chapter-btn {
     display: flex;
@@ -172,7 +173,7 @@
     text-align: left;
     width: 100%;
     margin: 0;
-    font-size: 15px;
+    font-size: 16px;
   }
   .chapter-btn:hover:not(:disabled) { border-color: #3b82f6; }
   .chapter-btn.locked { opacity: 0.4; cursor: not-allowed; }
@@ -195,16 +196,16 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
   }
   .topnav button {
     width: auto;
     padding: 8px 14px;
-    font-size: 13px;
+    font-size: 14px;
     margin: 0;
   }
   .topnav .level-tag {
-    font-size: 12px;
+    font-size: 13px;
     padding: 4px 10px;
     background: #334155;
     border-radius: 20px;
@@ -212,7 +213,7 @@
   }
   .final-screen {
     text-align: center;
-    padding: 20px 0;
+    padding: 16px 0;
   }
   .final-screen .emoji {
     font-size: 56px;
@@ -220,7 +221,7 @@
     display: block;
   }
   .final-screen h1 {
-    font-size: 24px;
+    font-size: 26px;
     margin-bottom: 12px;
     color: #fbbf24;
   }
@@ -241,7 +242,7 @@
     justify-content: space-between;
     padding: 8px 0;
     border-bottom: 1px solid #334155;
-    font-size: 15px;
+    font-size: 16px;
   }
   .final-stats .stat-row:last-child { border-bottom: none; }
   .final-stats .stat-value {
@@ -249,16 +250,16 @@
     color: #93c5fd;
   }
   .final-thanks {
-    font-size: 14px;
+    font-size: 15px;
     color: #94a3b8;
     line-height: 1.6;
     margin: 20px 0;
     font-style: italic;
   }
   .user-greeting {
-    font-size: 13px;
+    font-size: 14px;
     color: #94a3b8;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
     text-align: center;
   }
 </style>
@@ -275,9 +276,6 @@ if (tg) {
   tg.ready();
   tg.expand();
   telegramUser = tg.initDataUnsafe?.user || null;
-  if (telegramUser) {
-    console.log("Telegram user:", telegramUser);
-  }
 }
 
 // ============ КОНТЕНТ ============
@@ -1105,7 +1103,6 @@ function renderFinalScreen(correct, total, percent) {
   `;
 }
 
-// Запуск
 render();
 </script>
 </body>
