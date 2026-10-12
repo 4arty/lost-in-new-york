@@ -262,20 +262,70 @@
     margin-bottom: 14px;
     text-align: center;
   }
+  .loading-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    text-align: center;
+  }
+  .loading-screen .spinner {
+    font-size: 40px;
+    margin-bottom: 16px;
+    animation: spin 1.5s linear infinite;
+  }
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  .loading-screen p { color: #94a3b8; }
+  .sync-status {
+    position: fixed;
+    bottom: 12px;
+    right: 12px;
+    font-size: 12px;
+    color: #64748b;
+    background: rgba(15, 23, 42, 0.8);
+    padding: 4px 10px;
+    border-radius: 12px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+  }
+  .sync-status.visible { opacity: 1; }
+  .sync-status.error { color: #fca5a5; }
 </style>
 </head>
 <body>
 <div class="app" id="app"></div>
+<div class="sync-status" id="sync-status"></div>
 
 <script>
+// ============ КОНФИГУРАЦИЯ ============
+const API_URL = 'https://lostinny-arty186.mia0.amvera.tech';
+
 // ============ TELEGRAM WEB APP ============
 const tg = window.Telegram?.WebApp;
 let telegramUser = null;
+let userId = null;
 
 if (tg) {
   tg.ready();
   tg.expand();
   telegramUser = tg.initDataUnsafe?.user || null;
+  if (telegramUser && telegramUser.id) {
+    userId = String(telegramUser.id);
+  }
+}
+
+// Если приложение открыто вне Telegram (например, для теста в браузере)
+// используем локальный ID, чтобы прогресс всё равно сохранялся
+if (!userId) {
+  userId = 'local-test-user';
+  console.log('Запущено вне Telegram. Используем user_id:', userId);
+} else {
+  console.log('Telegram user_id:', userId);
 }
 
 // ============ КОНТЕНТ ============
@@ -729,16 +779,67 @@ const TOTAL_CHAPTERS = 7;
 // ============ СОСТОЯНИЕ ============
 let state = {
   level: null,
-  screen: "start",
+  screen: "loading", // loading | start | map | chapter | exercises | result
   chapterIndex: 0,
   answers: {},
   currentExercise: 0
 };
 
-let progress = JSON.parse(localStorage.getItem("liny_progress") || "{}");
+// Прогресс: { level: { 1: {done, correct, total, percent}, ... } }
+let progress = {};
 
-function saveProgress() {
-  localStorage.setItem("liny_progress", JSON.stringify(progress));
+// ============ РАБОТА С СЕРВЕРОМ ============
+function showSyncStatus(text, isError = false) {
+  const el = document.getElementById('sync-status');
+  if (!el) return;
+  el.textContent = text;
+  el.className = 'sync-status visible' + (isError ? ' error' : '');
+  setTimeout(() => {
+    el.className = 'sync-status' + (isError ? ' error' : '');
+  }, 2000);
+}
+
+async function loadProgressFromServer() {
+  try {
+    const res = await fetch(`${API_URL}/progress/${userId}`);
+    if (!res.ok) throw new Error('Ошибка загрузки');
+    const data = await res.json();
+
+    if (!data.isNew && data.level) {
+      // Восстанавливаем прогресс
+      progress = { [data.level]: data.completedChapters || {} };
+      state.level = data.level;
+      console.log('Прогресс загружен с сервера:', data);
+      showSyncStatus('✓ Прогресс загружен');
+    } else {
+      console.log('Новый пользователь');
+    }
+  } catch (err) {
+    console.error('Ошибка загрузки прогресса:', err);
+    showSyncStatus('⚠ Не удалось загрузить прогресс', true);
+    // Продолжаем с пустым прогрессом
+  }
+}
+
+async function saveProgressToServer() {
+  if (!state.level) return;
+  try {
+    const res = await fetch(`${API_URL}/progress/${userId}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        level: state.level,
+        chapterIndex: state.chapterIndex,
+        completedChapters: progress[state.level] || {}
+      })
+    });
+    if (!res.ok) throw new Error('Ошибка сохранения');
+    console.log('Прогресс сохранён на сервере');
+    showSyncStatus('✓ Сохранено');
+  } catch (err) {
+    console.error('Ошибка сохранения прогресса:', err);
+    showSyncStatus('⚠ Не удалось сохранить', true);
+  }
 }
 
 function getLevelProgress() {
@@ -751,11 +852,21 @@ const app = document.getElementById("app");
 
 // ============ РЕНДЕР ============
 function render() {
-  if (state.screen === "start") renderStart();
+  if (state.screen === "loading") renderLoading();
+  else if (state.screen === "start") renderStart();
   else if (state.screen === "map") renderMap();
   else if (state.screen === "chapter") renderChapter();
   else if (state.screen === "exercises") renderExercises();
   else if (state.screen === "result") renderResult();
+}
+
+function renderLoading() {
+  app.innerHTML = `
+    <div class="loading-screen">
+      <div class="spinner">⏳</div>
+      <p>Загружаем твой прогресс...</p>
+    </div>
+  `;
 }
 
 function renderStart() {
@@ -1027,14 +1138,17 @@ function renderResult() {
   const correct = Object.values(state.answers).filter(a => a.correct).length;
   const percent = Math.round((correct / total) * 100);
 
+  // Обновляем локальный прогресс
   const lp = getLevelProgress();
   lp[c.id] = { done: true, correct, total, percent };
-  saveProgress();
+
+  // Сохраняем на сервер (асинхронно, не блокируем UI)
+  saveProgressToServer();
 
   const isLastChapter = state.chapterIndex >= content[state.level].chapters.length - 1;
 
   if (isLastChapter) {
-    renderFinalScreen(correct, total, percent);
+    renderFinalScreen();
     return;
   }
 
@@ -1057,7 +1171,7 @@ function renderResult() {
   `;
 }
 
-function renderFinalScreen(correct, total, percent) {
+function renderFinalScreen() {
   const lp = getLevelProgress();
   let totalCorrect = 0;
   let totalExercises = 0;
@@ -1068,7 +1182,6 @@ function renderFinalScreen(correct, total, percent) {
     }
   }
   const overallPercent = Math.round((totalCorrect / totalExercises) * 100);
-
   const otherLevelName = state.level === 'a2' ? 'B2' : 'A2';
 
   app.innerHTML = `
@@ -1103,7 +1216,25 @@ function renderFinalScreen(correct, total, percent) {
   `;
 }
 
-render();
+// ============ ИНИЦИАЛИЗАЦИЯ ============
+async function init() {
+  // Сначала показываем экран загрузки
+  render();
+
+  // Загружаем прогресс с сервера
+  await loadProgressFromServer();
+
+  // Если есть сохранённый уровень — идём сразу на карту глав
+  if (state.level) {
+    state.screen = "map";
+  } else {
+    state.screen = "start";
+  }
+
+  render();
+}
+
+init();
 </script>
 </body>
 </html>
