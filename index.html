@@ -14,32 +14,31 @@
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    padding: 0;
+    padding: 20px;
   }
   .app {
     width: 100%;
     max-width: 480px;
     background: #1e293b;
-    border-radius: 0;
-    padding: 16px;
+    border-radius: 20px;
+    padding: 24px;
     box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-    min-height: 100vh;
   }
-  h1 { font-size: 24px; margin-bottom: 8px; color: #fff; }
-  h2 { font-size: 19px; margin: 14px 0 8px; color: #93c5fd; }
-  p { line-height: 1.6; margin-bottom: 12px; font-size: 16px; }
-  .subtitle { color: #94a3b8; font-size: 15px; margin-bottom: 16px; }
+  h1 { font-size: 22px; margin-bottom: 8px; color: #fff; }
+  h2 { font-size: 18px; margin: 16px 0 8px; color: #93c5fd; }
+  p { line-height: 1.6; margin-bottom: 12px; font-size: 15px; }
+  .subtitle { color: #94a3b8; font-size: 14px; margin-bottom: 20px; }
   button {
     background: #3b82f6;
     color: #fff;
     border: none;
-    padding: 13px 20px;
+    padding: 12px 20px;
     border-radius: 12px;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 600;
     cursor: pointer;
     width: 100%;
-    margin-top: 10px;
+    margin-top: 12px;
     transition: background 0.2s;
   }
   button:hover { background: #2563eb; }
@@ -56,7 +55,7 @@
     justify-content: center;
     color: #64748b;
     font-size: 13px;
-    margin: 12px 0;
+    margin: 16px 0;
     text-align: center;
     padding: 10px;
     border: 2px dashed #475569;
@@ -64,14 +63,14 @@
   img.chapter-img {
     width: 100%;
     border-radius: 12px;
-    margin: 12px 0;
+    margin: 16px 0;
     display: block;
   }
   .exercise {
     background: #0f172a;
     border-radius: 12px;
-    padding: 14px;
-    margin-bottom: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
   }
   .exercise-label {
     font-size: 12px;
@@ -80,28 +79,28 @@
     margin-bottom: 8px;
     letter-spacing: 1px;
   }
-  .question { font-size: 16px; margin-bottom: 12px; color: #f1f5f9; }
+  .question { font-size: 15px; margin-bottom: 12px; color: #f1f5f9; }
   input[type="text"] {
     width: 100%;
-    padding: 12px 14px;
+    padding: 10px 14px;
     border-radius: 10px;
     border: 2px solid #334155;
     background: #1e293b;
     color: #fff;
-    font-size: 16px;
+    font-size: 15px;
     outline: none;
   }
   input[type="text"]:focus { border-color: #3b82f6; }
   input[type="text"]:disabled { opacity: 0.6; }
   .options { display: flex; flex-direction: column; gap: 8px; }
   .option {
-    padding: 12px 14px;
+    padding: 10px 14px;
     border-radius: 10px;
     border: 2px solid #334155;
     background: #1e293b;
     color: #e2e8f0;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 15px;
     text-align: left;
     transition: all 0.15s;
     width: 100%;
@@ -117,7 +116,7 @@
     margin-top: 12px;
     padding: 12px;
     border-radius: 10px;
-    font-size: 15px;
+    font-size: 14px;
     line-height: 1.5;
   }
   .feedback.correct { background: #14532d; color: #bbf7d0; }
@@ -130,13 +129,13 @@
     border-radius: 6px;
     font-style: italic;
     color: #fde68a;
-    font-size: 14px;
+    font-size: 13px;
   }
   .progress-bar {
     height: 6px;
     background: #334155;
     border-radius: 3px;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
     overflow: hidden;
   }
   .progress-fill {
@@ -151,14 +150,14 @@
     border-radius: 12px;
     padding: 20px;
     text-align: center;
-    margin-top: 14px;
+    margin-top: 16px;
   }
   .big { font-size: 40px; margin-bottom: 8px; }
   .chapter-map {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    margin-top: 14px;
+    margin-top: 16px;
   }
   .chapter-btn {
     display: flex;
@@ -173,7 +172,7 @@
     text-align: left;
     width: 100%;
     margin: 0;
-    font-size: 16px;
+    font-size: 15px;
   }
   .chapter-btn:hover:not(:disabled) { border-color: #3b82f6; }
   .chapter-btn.locked { opacity: 0.4; cursor: not-allowed; }
@@ -196,16 +195,16 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 14px;
+    margin-bottom: 16px;
   }
   .topnav button {
     width: auto;
     padding: 8px 14px;
-    font-size: 14px;
+    font-size: 13px;
     margin: 0;
   }
   .topnav .level-tag {
-    font-size: 13px;
+    font-size: 12px;
     padding: 4px 10px;
     background: #334155;
     border-radius: 20px;
@@ -213,7 +212,7 @@
   }
   .final-screen {
     text-align: center;
-    padding: 16px 0;
+    padding: 20px 0;
   }
   .final-screen .emoji {
     font-size: 56px;
@@ -221,7 +220,7 @@
     display: block;
   }
   .final-screen h1 {
-    font-size: 26px;
+    font-size: 24px;
     margin-bottom: 12px;
     color: #fbbf24;
   }
@@ -242,7 +241,7 @@
     justify-content: space-between;
     padding: 8px 0;
     border-bottom: 1px solid #334155;
-    font-size: 16px;
+    font-size: 15px;
   }
   .final-stats .stat-row:last-child { border-bottom: none; }
   .final-stats .stat-value {
@@ -250,82 +249,35 @@
     color: #93c5fd;
   }
   .final-thanks {
-    font-size: 15px;
+    font-size: 14px;
     color: #94a3b8;
     line-height: 1.6;
     margin: 20px 0;
     font-style: italic;
   }
   .user-greeting {
-    font-size: 14px;
+    font-size: 13px;
     color: #94a3b8;
-    margin-bottom: 14px;
-    text-align: center;
-  }
-  .loading-screen {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 60vh;
-    text-align: center;
-  }
-  .loading-screen .spinner {
-    font-size: 40px;
     margin-bottom: 16px;
-    animation: spin 1.5s linear infinite;
+    text-align: center;
   }
-  @keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-  .loading-screen p { color: #94a3b8; }
-  .sync-status {
-    position: fixed;
-    bottom: 12px;
-    right: 12px;
-    font-size: 12px;
-    color: #64748b;
-    background: rgba(15, 23, 42, 0.8);
-    padding: 4px 10px;
-    border-radius: 12px;
-    opacity: 0;
-    transition: opacity 0.3s;
-    pointer-events: none;
-  }
-  .sync-status.visible { opacity: 1; }
-  .sync-status.error { color: #fca5a5; }
 </style>
 </head>
 <body>
 <div class="app" id="app"></div>
-<div class="sync-status" id="sync-status"></div>
 
 <script>
-// ============ КОНФИГУРАЦИЯ ============
-const API_URL = 'https://lostinny-arty186.mia0.amvera.tech';
-
 // ============ TELEGRAM WEB APP ============
 const tg = window.Telegram?.WebApp;
 let telegramUser = null;
-let userId = null;
 
 if (tg) {
   tg.ready();
   tg.expand();
   telegramUser = tg.initDataUnsafe?.user || null;
-  if (telegramUser && telegramUser.id) {
-    userId = String(telegramUser.id);
+  if (telegramUser) {
+    console.log("Telegram user:", telegramUser);
   }
-}
-
-// Если приложение открыто вне Telegram (например, для теста в браузере)
-// используем локальный ID, чтобы прогресс всё равно сохранялся
-if (!userId) {
-  userId = 'local-test-user';
-  console.log('Запущено вне Telegram. Используем user_id:', userId);
-} else {
-  console.log('Telegram user_id:', userId);
 }
 
 // ============ КОНТЕНТ ============
@@ -779,67 +731,16 @@ const TOTAL_CHAPTERS = 7;
 // ============ СОСТОЯНИЕ ============
 let state = {
   level: null,
-  screen: "loading", // loading | start | map | chapter | exercises | result
+  screen: "start",
   chapterIndex: 0,
   answers: {},
   currentExercise: 0
 };
 
-// Прогресс: { level: { 1: {done, correct, total, percent}, ... } }
-let progress = {};
+let progress = JSON.parse(localStorage.getItem("liny_progress") || "{}");
 
-// ============ РАБОТА С СЕРВЕРОМ ============
-function showSyncStatus(text, isError = false) {
-  const el = document.getElementById('sync-status');
-  if (!el) return;
-  el.textContent = text;
-  el.className = 'sync-status visible' + (isError ? ' error' : '');
-  setTimeout(() => {
-    el.className = 'sync-status' + (isError ? ' error' : '');
-  }, 2000);
-}
-
-async function loadProgressFromServer() {
-  try {
-    const res = await fetch(`${API_URL}/progress/${userId}`);
-    if (!res.ok) throw new Error('Ошибка загрузки');
-    const data = await res.json();
-
-    if (!data.isNew && data.level) {
-      // Восстанавливаем прогресс
-      progress = { [data.level]: data.completedChapters || {} };
-      state.level = data.level;
-      console.log('Прогресс загружен с сервера:', data);
-      showSyncStatus('✓ Прогресс загружен');
-    } else {
-      console.log('Новый пользователь');
-    }
-  } catch (err) {
-    console.error('Ошибка загрузки прогресса:', err);
-    showSyncStatus('⚠ Не удалось загрузить прогресс', true);
-    // Продолжаем с пустым прогрессом
-  }
-}
-
-async function saveProgressToServer() {
-  if (!state.level) return;
-  try {
-    const res = await fetch(`${API_URL}/progress/${userId}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        level: state.level,
-        chapterIndex: state.chapterIndex,
-        completedChapters: progress[state.level] || {}
-      })
-    });
-    if (!res.ok) throw new Error('Ошибка сохранения');
-    console.log('Прогресс сохранён на сервере');
-    showSyncStatus('✓ Сохранено');
-  } catch (err) {
-    console.error('Ошибка сохранения прогресса:', err);
-    showSyncStatus('⚠ Не удалось сохранить', true);
-  }
+function saveProgress() {
+  localStorage.setItem("liny_progress", JSON.stringify(progress));
 }
 
 function getLevelProgress() {
@@ -852,21 +753,11 @@ const app = document.getElementById("app");
 
 // ============ РЕНДЕР ============
 function render() {
-  if (state.screen === "loading") renderLoading();
-  else if (state.screen === "start") renderStart();
+  if (state.screen === "start") renderStart();
   else if (state.screen === "map") renderMap();
   else if (state.screen === "chapter") renderChapter();
   else if (state.screen === "exercises") renderExercises();
   else if (state.screen === "result") renderResult();
-}
-
-function renderLoading() {
-  app.innerHTML = `
-    <div class="loading-screen">
-      <div class="spinner">⏳</div>
-      <p>Загружаем твой прогресс...</p>
-    </div>
-  `;
 }
 
 function renderStart() {
@@ -1138,17 +1029,14 @@ function renderResult() {
   const correct = Object.values(state.answers).filter(a => a.correct).length;
   const percent = Math.round((correct / total) * 100);
 
-  // Обновляем локальный прогресс
   const lp = getLevelProgress();
   lp[c.id] = { done: true, correct, total, percent };
-
-  // Сохраняем на сервер (асинхронно, не блокируем UI)
-  saveProgressToServer();
+  saveProgress();
 
   const isLastChapter = state.chapterIndex >= content[state.level].chapters.length - 1;
 
   if (isLastChapter) {
-    renderFinalScreen();
+    renderFinalScreen(correct, total, percent);
     return;
   }
 
@@ -1171,7 +1059,7 @@ function renderResult() {
   `;
 }
 
-function renderFinalScreen() {
+function renderFinalScreen(correct, total, percent) {
   const lp = getLevelProgress();
   let totalCorrect = 0;
   let totalExercises = 0;
@@ -1182,6 +1070,7 @@ function renderFinalScreen() {
     }
   }
   const overallPercent = Math.round((totalCorrect / totalExercises) * 100);
+
   const otherLevelName = state.level === 'a2' ? 'B2' : 'A2';
 
   app.innerHTML = `
@@ -1216,25 +1105,8 @@ function renderFinalScreen() {
   `;
 }
 
-// ============ ИНИЦИАЛИЗАЦИЯ ============
-async function init() {
-  // Сначала показываем экран загрузки
-  render();
-
-  // Загружаем прогресс с сервера
-  await loadProgressFromServer();
-
-  // Если есть сохранённый уровень — идём сразу на карту глав
-  if (state.level) {
-    state.screen = "map";
-  } else {
-    state.screen = "start";
-  }
-
-  render();
-}
-
-init();
+// Запуск
+render();
 </script>
 </body>
 </html>
